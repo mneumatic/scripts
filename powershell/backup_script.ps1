@@ -11,14 +11,16 @@ $ZipPath = "G:\Backups\backup_$Date"
 
 # Backup for User directory.
 
-echo "Backing up C:\Users\mneumatic"
+Write-Output "Backing up C:\Users\mneumatic"
 robocopy $Source $Destination /E /XC /XD .* AppData Downloads "Application Data" Cookies "Local Settings" "My Documents" "My Pictures" "My Videos" "My Music" NetHood PrintHood Recent SendTo "Start Menu" Templates /XA:H /XN /XO /R:1 /W:1
 
 # Backup for ROMs directory. Got to keep those oldies.
 
+Write-Output "Backing up F:\ROMLibrary"
 robocopy "F:\ROMLibrary" $Destination\ROMLibrary /E /XC
 
 # Compress & delete destination folder after compression
 
+Write-Output "Compressing Backup"
 & $SevenZip a -t7z -mx=9 $ZipPath "$Destination\*" 
 Remove-Item $Destination -Recurse -Force 
