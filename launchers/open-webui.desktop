@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Open WebUI
+GenericName=LLM Interface
+Comment=Open WebUI is an extensible, feature-rich, and user-friendly self-hosted AI platform designed to operate entirely offline. 
+Exec=/var/home/mneumatic/.local/bin/open-webui.sh
+Terminal=false
+Icon=/var/home/mneumatic/.local/share/icons/hicolor/512x512/apps/open-webui-icon.png
+Categories=Developement;
+StartupNotify=true
