@@ -7,10 +7,10 @@ if ! podman ps --format '{{.Names}}' | grep -q postgres; then
     sleep 2 # Sleep before starting following container to make sure initialization is complete
 fi
 
-if ! podman ps --format '{{.Names}}' | grep -q forgejo; then
-    echo "Starting forgejo container..."
-    podman start forgejo
+if ! podman ps --format '{{.Names}}' | grep -q pgadmin; then
+    echo "Starting pgadmin container..."
+    podman start pgadmin
 fi
 
 # Open Browser
-xdg-open http://localhost:3000 2>/dev/null
+xdg-open http://localhost:8080 2>/dev/null
