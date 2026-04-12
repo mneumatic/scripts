@@ -10,6 +10,7 @@ fi
 if ! podman ps --format '{{.Names}}' | grep -q pgadmin; then
     echo "Starting pgadmin container..."
     podman start pgadmin
+    sleep 5
 fi
 
 # Open Browser

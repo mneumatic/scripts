@@ -10,6 +10,7 @@ fi
 if ! podman ps --format '{{.Names}}' | grep -q open-webui; then
     echo "Starting open-webui container..."
     podman start open-webui
+    sleep 5
 fi
 
 # Open Browser

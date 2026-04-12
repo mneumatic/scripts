@@ -10,6 +10,7 @@ fi
 if ! podman ps --format '{{.Names}}' | grep -q forgejo; then
     echo "Starting forgejo container..."
     podman start forgejo
+    sleep 5
 fi
 
 # Open Browser
