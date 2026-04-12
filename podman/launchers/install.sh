@@ -20,7 +20,7 @@ function install_launchers() {
 	echo "q) Quit"
 
 	while true; do
-		# Prompt – you can customise the prompt text as you like
+		# Prompt – you can customize the prompt text as you like
 		read -rp "Enter the number corresponding to your choice (1-6 / q to quit): " answer
 
 		# Make the test case‑insensitive by converting to lower case
