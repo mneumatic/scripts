@@ -6,6 +6,7 @@ function install_launchers() {
 	local local_app_dir="$HOME/.local/share/applications"
 	local local_icons_dir="$HOME/.local/share/icons/scalable/apps"
 	local local_bin_dir="$HOME/.local/bin"
+	local local_autostart_dir="$HOME/.config/autostart"
 
 	echo ""
 	echo "This script will create desktop entries for pgAdmin, Forgejo, and Open WebUI Podman Containers."
@@ -32,8 +33,7 @@ function install_launchers() {
 			*) echo "Unrecognized input. Please type a number between 1 and 4 or q to quit.";;
 		esac
 	done
-
-}  
+}
 
 # Check for necessary directories and create them if they don't exist
 function check_necessary_directories() {
@@ -48,6 +48,10 @@ function check_necessary_directories() {
     if [ ! -d "$local_bin_dir" ]; then
         mkdir -p "$local_bin_dir"
     fi
+
+	if [ ! -d "$local_autostart_dir" ]; then
+		mkdir -p "$local_autostart_dir"
+	fi
 }
 
 # Function to create desktop file
@@ -56,11 +60,31 @@ function create_desktop_file() {
     cat <<EOL > "$local_app_dir/$s1.desktop" 
 [Desktop Entry]
 Type=Application
-Name=pgAdmin
+Name=$s1
 Exec=$local_bin_dir/$s1.sh
 Icon=$local_icons_dir/$s1.svg
 Terminal=false
 EOL
+
+	echo "Desktop file created successfully."
+
+	while true; do
+		read -rp "Do you want to add $s1 to startup applications? (y/n): " startup_answer
+		case "${startup_answer,,}" in
+			y|yes) 
+				cat <<EOL > "$local_autostart_dir/$s1.desktop" 
+[Desktop Entry]
+Type=Application
+Name=$s1
+Exec=$local_bin_dir/$s1-autostart.sh
+Terminal=false
+EOL
+				echo "$s1 added to startup applications."; break;;
+			n|no) echo "$s1 will not be added to startup applications."; break;;
+			*) echo "Unrecognized input. Please type y for yes or n for no.";;
+		esac
+	done
+
 }
 
 function copy_icon() {
@@ -70,4 +94,7 @@ function copy_icon() {
 function copy_script() {
     cp -r "scripts/$s1.sh" "$local_bin_dir/"
     chmod +x "$local_bin_dir/$s1.sh"
+
+	cp -r "scripts/$s1-autostart.sh" "$local_bin_dir/"
+	chmod +x "$local_bin_dir/$s1-autostart.sh"
 }
