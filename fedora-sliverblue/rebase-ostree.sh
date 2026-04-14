@@ -4,12 +4,11 @@
 # email: mneumatic@proton.me
 # version: 1.0
 
-# A simple script to rebase to a new image on Fedora Silverblue, while also handling the uninstallation and optional reinstallation of rpm-fusion release packages.
+# A simple script to rebase to a new image on Fedora Silverblue, while also handling the uninstallation and reinstallation of rpm-fusion release packages.
 # Usage: Just run the script and follow the prompts. You will need to provide a valid image name to rebase to, e.g. fedora:fedora/44/x86_64/silverblue. 
 # The script will handle the rest, including uninstalling old rpm-fusion release packages, rebasing to the new image, and optionally reinstalling rpm-fusion for the new release. 
 # Yes I know this script is a bit overkill for what it does, but I wanted to make it as user-friendly and foolproof as possible, especially for users who may not be 
 # familiar with the command line or the rebase process. Plus I'm lazy.
-
 
 function msg() {
     printf '\a'
