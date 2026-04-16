@@ -26,7 +26,7 @@ function msg() {
         read -p "Please enter the image name to rebase to (q to quit): " aug1
 
         case "${aug1,,}" in
-            q|QUIT) echo "Exiting the script."; exit 0;;
+            q|quit) echo "Exiting the script."; exit 0;;
             *)  if [[ -z "$aug1" ]]; then
                     echo "Image name cannot be empty."
                 else
@@ -44,8 +44,8 @@ function msg() {
 
         case "${confirm,,}" in
             y|yes) echo "Proceeding with the rebase..."; break;;
-            n|no) echo "Rebase cancelled. Exiting."; exit 0;;
-            q|QUIT) echo "Exiting the script."; exit 0;;
+            n|no) echo "Rebase restarting..."; msg;;
+            q|quit) echo "Exiting the script."; exit 0;;
             *) echo "Invalid input. Please enter 'y' for yes or 'n' for no.";;
         esac
     done
@@ -56,7 +56,7 @@ function run() {
 
     image="$aug1"
 
-    # Uninstall the old rpm‑fusion release packages
+    # Uninstall the old RPM Fusion release packages
     check_rpmfusion=$(rpm -q rpmfusion-free-release rpmfusion-nonfree-release 2>/dev/null)
     if [[ -n "$check_rpmfusion" ]]; then
         echo ""
@@ -65,7 +65,7 @@ function run() {
         echo "Done."
     fi
     
-    # Re‑rebase to new image i.e. fedora:fedora/44/x86_64/silverblue
+    # Rebase to new image i.e. fedora:fedora/44/x86_64/silverblue
     echo ""
     echo "Rebasing to new image: $image"
     sudo rpm-ostree rebase $image
@@ -84,7 +84,7 @@ function run() {
         case "${reboot_confirm,,}" in
             y|yes) echo "Rebooting now..."; sudo systemctl reboot; break;;
             n|no) echo "Please remember to reboot as soon as possible to apply the changes."; break;;
-            q|QUIT) echo "Exiting the script. Please remember to reboot as soon as possible to apply the changes."; exit 0;;
+            q|quit) echo "Exiting the script. Please remember to reboot as soon as possible to apply the changes."; exit 0;;
             *) echo "Invalid input. Please enter 'y' for yes or 'n' for no.";;
         esac
     done
