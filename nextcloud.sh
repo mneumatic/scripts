@@ -2,7 +2,7 @@
 
 source private-variables.sh
 
-bind_mount="/var/home/mneumatic/.disks/seagate-2tb/containers/storage/volumes"
+bind_mount="/var/home/mneumatic/.disks/seagate-8tb/containers/storage/volumes"
 
 mkdir -p "$bind_mount"/nc-db-data
 mkdir -p "$bind_mount"/nc-data
@@ -23,8 +23,8 @@ podman run -d \
   -e MARIADB_DATABASE=nextcloud \
   -e MARIADB_USER="$mariadb_user" \
   -e MARIADB_PASSWORD="$mariadb_user_pass" \
-  -v "$bind_mount"/nc-db-data:/var/lib/mysql:Z,U \
-  mariadb:latest
+  -v "$bind_mount"/nc-db-data:/var/lib/mysql:Z \
+  mariadb:11
 
 sleep 10
 
@@ -40,5 +40,5 @@ podman run -d \
   -e REDIS_HOST_PASSWORD="$redis_pass" \
   -e NEXTCLOUD_ADMIN_USER="$nc_admin_user" \
   -e NEXTCLOUD_ADMIN_PASSWORD="$nc_admin_user_pass" \
-  -v "$bind_mount"/nc-data:/var/www/html:Z,U \
+  -v "$bind_mount"/nc-data:/var/www/html:Z \
   nextcloud:latest
