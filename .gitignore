@@ -3,3 +3,6 @@
 *.log
 *.tmp
 *.bak
+
+# Private
+private-variables.sh
