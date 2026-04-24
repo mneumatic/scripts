@@ -26,10 +26,11 @@ export forgejo_db_user="username"
 export forgejo_db_pass="password"
 
 # IP, Domains, URLs
-# Posts can be adjusted in `install.sh`
+# Can be adjusted in `install.sh`
+# If changes are made make sure to adjust the entire `install.sh` script or the proper ports won't be open or work.
 server_host_ip="localhost"
 export forgejo_server_domain="$server_host_ip"
-export forgejo_server_root_url="http://$server_host_ip:3000" # This port must make the port mapping in `install.sh`
+export forgejo_server_root_url="http://$server_host_ip:3000"
 
 # Images
 export psql_image="postgres:latest"

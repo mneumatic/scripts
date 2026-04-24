@@ -51,11 +51,13 @@ function root_containers() {
 		-e FORGEJO__database__DB_TYPE="postgres" \
 		-e FORGEJO__database__HOST=127.0.0.1:5432 \
 		-e FORGEJO__server__SSH_PORT=2222 \
+		-e FORGEJO__server__SSH_DOMAIN="$forgejo_server_domain" \
 		-e FORGEJO__database__NAME="forgejo" \
 		-e FORGEJO__database__USER="$forgejo_db_user" \
 		-e FORGEJO__database__PASSWD="$forgejo_db_pass" \
 		-e FORGEJO__security__INSTALL_LOCK=true \
 		-v forgejo-data:/data:Z \
+		-v forgejo_config:/etc/gitea/config:Z \
 		"$forgejo_image"
 }
 
@@ -96,29 +98,91 @@ function rootless_containers() {
 		-e FORGEJO__database__DB_TYPE="postgres" \
 		-e FORGEJO__database__HOST=127.0.0.1:5432 \
 		-e FORGEJO__server__SSH_PORT=2222 \
+		-e FORGEJO__server__SSH_DOMAIN="$forgejo_server_domain" \
 		-e FORGEJO__database__NAME="forgejo" \
 		-e FORGEJO__database__USER="$forgejo_db_user" \
 		-e FORGEJO__database__PASSWD="$forgejo_db_pass" \
 		-e FORGEJO__security__INSTALL_LOCK=true \
 		-v forgejo-data:/data:Z \
+		-v forgejo_config:/etc/gitea/config:Z \
 		"$forgejo_image"
 }
 
+function firewalld_ports() {
+	sudo firewall-cmd --zone=public \
+		--add-port=80/tcp \
+		--add-port=3000/tcp \
+		--add-port=22/tcp \
+		--add-port=2222/tcp \
+		--add-port=5050/tcp \
+		--permanent
+	sudo firewall-cmd --reload
+	echo "Containers created."
+	echo "Ports opened:"
+	sudo firewall-cmd --zone=public --list-ports
+	echo "Goodbye."
+}
+
+function ufw_ports () {
+	sudo ufw allow 80,3000,22,2222,5050/tcp
+	sudo ufw reload
+	echo "Containers created."
+	echo "Ports opened:"
+	sudo ufw status
+	echo "Goodbye."
+}
+
+function open_ports() {
+	while true; do
+		read -r -p "Will these containers be running locally | Accessed locally? (y or n, q to quit):" input
+		case "${input,,}" in
+			y|Y)
+				echo "Containers created."
+				echo "Ports not opened."
+				echo "Goodbye."
+				break;;
+			n|N)
+				while true; do
+					read -r -p "firewalld or ufw: (f or u, q to quit)" input
+					case "${input,,}" in
+					f|F)
+						firewalld_ports
+						break;;
+					u|U)
+						ufw_ports
+						break;;
+					q|Q)
+						echo "Goodbye"
+						exit 0;;
+					*)
+						echo "Invalid input – please type 'root' or just press Enter.";;
+				    esac
+				done
+				break;;
+			q|Q)
+				echo "Containers created."
+				echo "Ports not opened."
+				echo "Goodbye."
+				exit 0;;
+			*)
+				echo "Invalid input. Please enter y or n, q to quit.";;
+		esac
+	done
+}
+
 while true; do
-	echo 'Enter "root" for ROOT Containers'
-	echo 'Leave blank for ROOTLESS Containers'
-	echo 'Enter "q" to quit.'
-	echo 
-    read -r -p "Input Selection: " input
+	read -r -p "Create as Root or Rootless? (r or rl, q to quit) " input
 
     case "${input,,}" in
-        root|ROOT)
+        r|R)
             echo "Root mode selected."
 			root_containers
+			open_ports
             break;;
-        "")
+        rl|RL)
             echo "Rootless mode selected."
 			rootless_containers
+			open_ports
             break;;
 		q|Q)
 			echo "Goodbye"

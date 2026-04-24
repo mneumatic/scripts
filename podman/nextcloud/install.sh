@@ -52,6 +52,8 @@ function root_containers() {
 		-v nextcloud-apps:/var/www/custom_apps:Z \
 		-v nextcloud-themes:/var/www/html/themes:Z \
 		"$nc_image"
+
+	
 }
 
 function rootless_containers() {
@@ -95,21 +97,77 @@ function rootless_containers() {
 		"$nc_image"
 }
 
+function firewalld_ports() {
+	sudo firewall-cmd --zone=public \
+		--add-port=80/tcp \
+		--permanent
+	sudo firewall-cmd --reload
+	echo "Containers created."
+	echo "Ports opened:"
+	sudo firewall-cmd --zone=public --list-ports
+	echo "Goodbye."
+}
+
+function ufw_ports () {
+	sudo ufw allow 80/tcp
+	sudo ufw reload
+	echo "Containers created."
+	echo "Ports opened:"
+	sudo ufw status
+	echo "Goodbye."
+}
+
+function open_ports() {
+	while true; do
+		read -r -p "Will these containers be running locally? (y or n, q to quit):" input
+		case "${input,,}" in
+			y|Y)
+				echo "Containers created."
+				echo "Ports not opened."
+				echo "Goodbye."
+				break;;
+			n|N)
+				while true; do
+					read -r -p "firewalld or ufw: (f or u, q to quit)" input
+					case "${input,,}" in
+					f|F)
+						firewalld_ports
+						break;;
+					u|U)
+						ufw_ports
+						break;;
+					q|Q)
+						echo "Goodbye"
+						exit 0;;
+					*)
+						echo "Invalid input – please type 'root' or just press Enter.";;
+				    esac
+				done
+				break;;
+			q|Q)
+				echo "Containers created."
+				echo "Ports not opened."
+				echo "Goodbye."
+				exit 0;;
+			*)
+				echo "Invalid input. Please enter y or n, q to quit.";;
+		esac
+	done
+}
+
 while true; do
-	echo 'Enter "root" for ROOT Containers'
-	echo 'Leave blank for ROOTLESS Containers'
-	echo 'Enter "q" to quit.'
-	echo 
-    read -r -p "Input Selection: " input
+    read -r -p "Create as Root or Rootless? (r or rl, q to quit) " input
 
     case "${input,,}" in
-        root|ROOT)
+        r|R)
             echo "Root mode selected."
 			root_containers
+			open_ports
             break;;
-        "")
+        rl|RL)
             echo "Rootless mode selected."
 			rootless_containers
+			open_ports
             break;;
 		q|Q)
 			echo "Goodbye"

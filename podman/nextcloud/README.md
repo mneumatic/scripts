@@ -17,7 +17,6 @@ Create `variable.sh` file with whatever texteditor you prefer.
 # If you're running this on a remote server, replace "localhost" with the server's IP address or domain name.
 # Use 'localhost' if running locally.
 
-
 # Usernames & Passwords
 export redis_pass="your password"
 export mariadb_root_pass="your root password"
@@ -27,6 +26,10 @@ export mariadb_user_pass="your password"
 # Username & Password
 export nc_admin_user="your username"
 export nc_admin_user_pass="your password"
+
+# IP, Domains, URLs
+# Can be adjusted in `install.sh`
+# If changes are made make sure to adjust the entire `install.sh` script or the proper ports won't be open or work.
 
 # Images
 export redis_image="redis:latest"
