@@ -1,0 +1,34 @@
+# Variable File: MongoDB
+
+Before running install.sh create a variable.sh file in this directory with the following variables. Add your values to each variable.
+
+## Create
+
+Create `variable.sh` file with whatever texteditor you prefer.
+
+```
+#!/bin/bash
+
+# WARNING: Do not share this file or its contents, as it contains sensitive information such as passwords.
+# There is no pod for this container. Container uses default PORT: 27017 which is hardcoded in the install.sh
+
+# Username & Password
+export mongo_root_user="admin" # changing this may cause issues. This should be changed or new user added after `install.sh` finishes.
+export mongo_root_pass="your password"
+
+# Image
+export mongo_image="mongo:latest"
+
+```
+
+## Now make the files executable:
+
+```
+chmod +x *.sh
+```
+
+## Install MongoDB:
+
+```
+./install.sh
+```
