@@ -18,15 +18,15 @@ MYSQL_ROOT_PASSWORD=""      # <--- Enter your MariaDB root password here
 POSTGRES_PASSWORD=""        # <--- Enter your PostgreSQL password here (usually 'postgres')
 
 # 2. Container Names
-NC_MARIADB="maria-db"       # Replace with your MariaDB container name
+NC_MARIADB="nextcloud-db"       # Replace with your MariaDB container name
 NC_NEXTCLOUD="nextcloud"    # Replace with your Nextcloud container name
-NC_REDIS="redis"            # Replace with your Redis container name
+NC_REDIS="nextcloud-redis"            # Replace with your Redis container name
 
 FOREJO_APP="forejo"         # Replace with your Forejo container name
-FOREJO_PG="postgres-db"     # Replace with your Forejo PostgreSQL container name
+FOREJO_PG="postgres"     # Replace with your Forejo PostgreSQL container name
 FOREJO_PGADMIN="pgadmin"    # Replace with your pgAdmin container name
 
-MONGO_CONTAINER="mongo-db"  # Replace with your MongoDB container name
+MONGO_CONTAINER="mongo"  # Replace with your MongoDB container name
 
 # 3. Volume Names (REQUIRED)
 # Find these via: podman volume ls
