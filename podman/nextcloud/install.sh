@@ -47,13 +47,12 @@ function root_containers() {
 		-e OVERWRITEPROTOCOL=http \
 		-e OVERWRITEHOST="$nc_overwrite_host" \
 		-e NEXTCLOUD_TRUSTED_DOMAINS="$nc_trusted_domains" \
+		-e NEXTCLOUD_FFMPEG_PATH=/usr/bin/ffmpeg \
 		-v nextcloud:/var/www/html:Z \
 		-v nextcloud-data:/var/www/html/data:Z \
 		-v nextcloud-apps:/var/www/custom_apps:Z \
 		-v nextcloud-themes:/var/www/html/themes:Z \
 		"$nc_image"
-
-	
 }
 
 function rootless_containers() {
@@ -90,6 +89,7 @@ function rootless_containers() {
 		-e OVERWRITEPROTOCOL=http \
 		-e OVERWRITEHOST="$nc_overwrite_host" \
 		-e NEXTCLOUD_TRUSTED_DOMAINS="$nc_trusted_domains" \
+		-e NEXTCLOUD_FFMPEG_PATH=/usr/bin/ffmpeg \
 		-v nextcloud:/var/www/html:Z \
 		-v nextcloud-data:/var/www/html/data:Z \
 		-v nextcloud-apps:/var/www/custom_apps:Z \
